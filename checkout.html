@@ -32,6 +32,15 @@
       localStorage.removeItem("cart");
       window.location.href = "index.html";
     });
+
+    const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
+
+fetch(`${BACKEND_URL}/api/sale`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ cartItems })
+});
+
   </script>
 </body>
 </html>
