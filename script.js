@@ -33,5 +33,6 @@ products.forEach(product => {
 });
 
 function addToCart(id) {
-  alert(\`Product \${id} added to cart (function to be expanded later)\`);
+  alert(`Product ${id} added to cart (function to be expanded later)`);
 }
+
