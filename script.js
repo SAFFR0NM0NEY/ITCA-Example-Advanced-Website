@@ -1,3 +1,4 @@
+// Product list (normally you'd load this from JSON or API)
 const products = [
   {
     id: "b001",
@@ -17,8 +18,10 @@ const products = [
   }
 ];
 
+// Reference to the product container
 const container = document.getElementById("product-container");
 
+// Render product cards
 products.forEach(product => {
   const card = document.createElement("div");
   card.className = "product-card";
@@ -32,7 +35,7 @@ products.forEach(product => {
   container.appendChild(card);
 });
 
+// Add to cart function (to be expanded later)
 function addToCart(id) {
   alert(`Product ${id} added to cart (function to be expanded later)`);
 }
-
