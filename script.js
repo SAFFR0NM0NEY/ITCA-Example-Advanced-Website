@@ -39,3 +39,29 @@ products.forEach(product => {
 function addToCart(id) {
   alert(`Product ${id} added to cart (function to be expanded later)`);
 }
+
+// Filter by category
+document.querySelectorAll(".nav-menu a[data-category]").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const category = e.target.dataset.category;
+    showProductsByCategory(category);
+  });
+});
+
+function showProductsByCategory(category) {
+  container.innerHTML = ""; // Clear existing products
+  const filtered = products.filter(p => p.category === category);
+  filtered.forEach(product => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>${product.description}</p>
+      <p><strong>R${product.price.toFixed(2)}</strong></p>
+      <button onclick="addToCart('${product.id}')">Add to Cart</button>
+    `;
+    container.appendChild(card);
+  });
+}
