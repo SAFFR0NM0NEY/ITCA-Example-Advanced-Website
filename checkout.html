@@ -21,26 +21,42 @@
   </main>
 
   <script>
-    document.getElementById("checkoutForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const cart = localStorage.getItem("cart");
-      if (!cart || JSON.parse(cart).length === 0) {
-        alert("Cart is empty!");
-        return;
-      }
-      alert("Order confirmed! (Next: send data to backend)");
+  const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
+
+  document.getElementById("checkout-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    // You can also gather form data if needed
+    const formData = {
+      name: this.querySelector("input[type='text']").value,
+      email: this.querySelector("input[type='email']").value,
+      address: this.querySelector("textarea").value,
+      cartItems: cart
+    };
+
+    fetch(`${BACKEND_URL}/api/sale`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert("Order confirmed! " + (data.message || ""));
       localStorage.removeItem("cart");
       window.location.href = "index.html";
+    })
+    .catch(err => {
+      console.error("Checkout failed:", err);
+      alert("Something went wrong during checkout.");
     });
+  });
+</script>
 
-    const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
-
-fetch(`${BACKEND_URL}/api/sale`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ cartItems })
-});
-
-  </script>
 </body>
 </html>
