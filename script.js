@@ -18,6 +18,11 @@ const products = [
   }
 ];
 
+document.addEventListener("DOMContentLoaded", function () {
+// Reference to the product container
+const container = document.getElementById("product-container");
+});
+
 // Reference to the product container
 const container = document.getElementById("product-container");
 
