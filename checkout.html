@@ -21,9 +21,13 @@
   </main>
 
   <script>
+document.addEventListener("DOMContentLoaded", function () {
   const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
+  const form = document.getElementById("checkout-form");
 
-  document.getElementById("checkout-form").addEventListener("submit", function(e) {
+  if (!form) return; // prevent error if form isn't found
+
+  form.addEventListener("submit", function(e) {
     e.preventDefault();
 
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -32,11 +36,10 @@
       return;
     }
 
-    // You can also gather form data if needed
     const formData = {
-      name: this.querySelector("input[type='text']").value,
-      email: this.querySelector("input[type='email']").value,
-      address: this.querySelector("textarea").value,
+      name: form.querySelector("input[name='name']").value,
+      email: form.querySelector("input[name='email']").value,
+      address: form.querySelector("textarea[name='address']").value,
       cartItems: cart
     };
 
@@ -56,7 +59,9 @@
       alert("Something went wrong during checkout.");
     });
   });
+});
 </script>
+
 
 </body>
 </html>
