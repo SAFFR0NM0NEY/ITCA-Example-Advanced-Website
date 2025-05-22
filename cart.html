@@ -17,23 +17,42 @@
 
   <footer>
     <button onclick="checkout()">Proceed to Checkout</button>
+    <button onclick="clearCart()">Clear Cart</button>
   </footer>
 
   <script>
+    const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
     const cartContainer = document.getElementById("cart-container");
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (cart.length === 0) {
-      cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-    } else {
+    fetch(`${BACKEND_URL}/api/products`)
+      .then(res => res.json())
+      .then(products => showCart(products));
+
+    function showCart(products) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cartContainer.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
       let total = 0;
-      cart.forEach(item => {
-        total += item.price * item.quantity;
+
+      cart.forEach((item, index) => {
+        const product = products.find(p => p.id === item.id);
+        const subtotal = product.price * item.quantity;
+        total += subtotal;
+
         const div = document.createElement("div");
         div.innerHTML = `
-          <h3>${item.name}</h3>
-          <p>Price: R${item.price.toFixed(2)}</p>
-          <p>Quantity: ${item.quantity}</p>
+          <h3>${product.name}</h3>
+          <p>Price: R${product.price.toFixed(2)}</p>
+          <label>
+            Quantity:
+            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
+          </label>
+          <p>Subtotal: R${subtotal.toFixed(2)}</p>
           <hr>
         `;
         cartContainer.appendChild(div);
@@ -44,8 +63,23 @@
       cartContainer.appendChild(summary);
     }
 
+    function updateQuantity(id, qty) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.quantity = parseInt(qty);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        location.reload();
+      }
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cart");
+      location.reload();
+    }
+
     function checkout() {
-      window.location.href = "checkout.html";
+      alert("Proceeding to checkout...");
     }
   </script>
 </body>
