@@ -1,4 +1,3 @@
-// Toggle light/dark mode
 document.addEventListener("DOMContentLoaded", function () {
   const toggle = document.getElementById("themeToggle");
   if (toggle) {
