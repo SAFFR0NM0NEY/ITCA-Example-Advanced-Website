@@ -1,4 +1,3 @@
-// ⬇️ Declare this function OUTSIDE the DOMContentLoaded
 function addToCart(id) {
   const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
 
