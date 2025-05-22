@@ -1,9 +1,41 @@
-const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
+// ⬇️ Declare this function OUTSIDE the DOMContentLoaded
+function addToCart(id) {
+  const BACKEND_URL = "https://itca-example-advanced-website-backend.onrender.com";
 
+  fetch(`${BACKEND_URL}/api/products`)
+    .then(res => res.json())
+    .then(products => {
+      const product = products.find(p => p.id === id);
+      if (!product) return alert("Product not found");
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: 1
+        });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${product.name} added to cart`);
+    })
+    .catch(err => {
+      console.error("Error adding to cart:", err);
+      alert("Could not add to cart.");
+    });
+}
+
+// ⬇️ DOMContentLoaded handles rendering only
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("product-container");
 
-  fetch(`${BACKEND_URL}/api/products`)
+  fetch("https://itca-example-advanced-website-backend.onrender.com/api/products")
     .then(res => res.json())
     .then(products => {
       renderProducts(products);
@@ -28,10 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
       container.appendChild(card);
     });
-  }
-
-  function addToCart(id) {
-    alert(`Product ${id} added to cart`);
   }
 
   function setupCategoryFiltering(products) {
