@@ -1,1 +1,0 @@
-Place product images here (e.g., art-of-war.jpg, headphones.jpg).
